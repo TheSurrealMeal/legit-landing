@@ -43,15 +43,26 @@ export default async (req) => {
 
   const contactId = contactIdFor(email);
 
-  const payload = {
+  const fields = {
+    FirstName: firstName,
+    Browser: browser,
+    Watches: watches,
+  };
+
+  // The update (PUT) endpoint wants tags as an object {tag: true};
+  // the create (POST) endpoint wants tags as an array [tag]. Same tag,
+  // two shapes — sending the wrong one returns INVALID_PARAMETERS.
+  const putPayload = {
     api_key: key,
     email_address: email,
-    // Field keys are the field TAGS from EmailOctopus (capitalised).
-    fields: {
-      FirstName: firstName,
-      Browser: browser,
-      Watches: watches,
-    },
+    fields,
+    tags: { beta: true },
+    status: 'SUBSCRIBED',
+  };
+  const postPayload = {
+    api_key: key,
+    email_address: email,
+    fields,
     tags: ['beta'],
     status: 'SUBSCRIBED',
   };
@@ -63,7 +74,7 @@ export default async (req) => {
       {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(putPayload),
       }
     );
 
@@ -74,7 +85,7 @@ export default async (req) => {
         {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
+          body: JSON.stringify(postPayload),
         }
       );
     }
