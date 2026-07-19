@@ -45,6 +45,17 @@
     .btn-ghost:hover{border-color:var(--white)}
     @media (max-width:720px){.nav-links a:not(.btn){display:none}}
     .hero{padding-top:80px;padding-bottom:64px}
+    /* Desktop: copy left, live demo right, both above the fold.
+       Stacks back to single-column on narrower screens. */
+    .hero .wrap{display:grid;grid-template-columns:1fr;gap:0;align-items:center}
+    @media (min-width:960px){
+      .hero{padding-top:72px;padding-bottom:72px}
+      .hero .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:center}
+      .hero .hero-copy{max-width:560px}
+      .hero .ext{margin-top:0}
+      .hero h1{font-size:clamp(44px,4.4vw,72px)}
+      .hero .lede{font-size:18px;margin-bottom:28px}
+    }
     .eyebrow{display:inline-block;font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--gray);padding:6px 10px;border:1px solid var(--border);border-radius:999px;margin-bottom:24px}
     .hero h1{font-size:clamp(48px,7vw,88px);font-weight:700;line-height:1.02;letter-spacing:-0.02em;margin:0 0 24px}
     .hero h1 .accent{color:var(--red)}
@@ -76,7 +87,9 @@
     .ext-head{display:flex;align-items:center;justify-content:space-between;padding-bottom:14px;border-bottom:1px solid var(--border)}
     .ext-head .wm{font-weight:700;letter-spacing:0.08em;font-size:15px}
     .ext-live{font-size:10px;letter-spacing:0.1em;font-weight:500;color:var(--red);text-transform:uppercase;margin-left:8px}
-    .ext-live::before{content:"";display:inline-block;width:5px;height:5px;background:var(--red);border-radius:50%;margin-right:5px;vertical-align:middle}
+    .ext-live::before{content:"";display:inline-block;width:5px;height:5px;background:var(--red);border-radius:50%;margin-right:5px;vertical-align:middle;animation:liveBlink 1.4s ease-in-out infinite}
+    @keyframes liveBlink{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(255,0,0,0.6)}50%{opacity:0.45;box-shadow:0 0 0 3px rgba(255,0,0,0)}}
+    @media (prefers-reduced-motion:reduce){.ext-live::before{animation:none}}
     .ext-gear{color:var(--gray);font-size:17px}
     .ext-chn{display:flex;align-items:center;gap:10px;margin:16px 0 14px}
     .ext-av{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#8b1a1a,#3d0505);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px}
@@ -217,6 +230,12 @@
 @keyframes extShimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
 @keyframes extPulse{0%,100%{opacity:0.5}50%{opacity:1}}
 .ext-mini .mmark{position:absolute;top:50%;width:3px;height:11px;border-radius:2px;transform:translate(-50%,-50%);box-shadow:0 0 0 2px rgba(0,0,0,0.55)}
+/* Signal markers animate from 0 to their score when the card scrolls into
+   view, so a passive viewer sees the tool "compute" rather than a screenshot. */
+.ext-pop.animate-signals .mmark{transition:left 0.9s cubic-bezier(0.22,1,0.36,1)}
+@media (prefers-reduced-motion:reduce){
+  .ext-pop.animate-signals .mmark{transition:none !important}
+}
 .ext-mini .mmark.ai,.ext-mini .mmark.farm{background:var(--red)}
 .ext-mini .mmark.human{background:var(--green)}
 .ext-mini .mlab{font-family:'Roboto Mono',monospace;font-size:10px;width:74px;flex-shrink:0;text-align:left}
@@ -374,6 +393,7 @@
 <!-- ===================== HERO + browser / extension-popup mockup ===================== -->
 <section class="hero" id="top">
   <div class="wrap">
+    <div class="hero-copy">
     <span class="eyebrow">Independent AI detection for YouTube</span>
     <h1>Viewers deserve <span class="accent">to know.</span></h1>
     <p class="lede">YouTube is filling up with AI-made videos and content-farm channels. Legit reads a whole channel, right in your browser, and answers two questions: <strong>is the content AI-made</strong>, and <strong>is it run like a content farm?</strong></p>
@@ -382,6 +402,7 @@
       <a href="#how" class="btn btn-ghost">How it works ↓</a>
     </div>
     <p class="strapline">Channel-level · Multi-signal · Independent.</p>
+    </div>
 
     <div class="ext">
       <div class="ext-br">
@@ -634,7 +655,7 @@
         </ul>
       </div>
     </div>
-    <div class="b2b" id="teams">Building a newsroom, an ad platform, or an EdTech tool? <a href="mailto:hello@legit.ai">Talk to us →</a></div>
+    <div class="b2b" id="teams">Building a newsroom, an ad platform, or an EdTech tool? <a href="mailto:hello@staylegit.co">Talk to us →</a></div>
   </div>
 </section>
 
@@ -751,6 +772,55 @@
       if (btn) { btn.disabled = false; btn.textContent = label; }
     }
   });
+})();
+</script>
+<!-- ===================== demo card: animate signal markers on scroll-in ===================== -->
+<script>
+(function () {
+  var pop = document.querySelector('.ext-pop');
+  if (!pop) return;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var marks = pop.querySelectorAll('.mmark');
+  if (!marks.length) return;
+
+  // Record each marker's target position, then park them at 0 (skip the dotted
+  // "channel average" markers — those are reference lines, not scores).
+  var targets = [];
+  marks.forEach(function (m, i) {
+    var isAvg = m.classList.contains('avg');
+    targets[i] = { el: m, left: m.style.left || '0%', avg: isAvg };
+    if (!reduce && !isAvg) m.style.left = '0%';
+  });
+
+  if (reduce) return; // leave everything at its final position
+
+  var played = false;
+  function play() {
+    if (played) return;
+    played = true;
+    // Wait for the hero to settle so the sweep is a visible beat, not a blur
+    // lost in the page's initial paint.
+    setTimeout(function () {
+      pop.classList.add('animate-signals');
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          targets.forEach(function (t) { if (!t.avg) t.el.style.left = t.left; });
+        });
+      });
+    }, 800);
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { play(); io.disconnect(); }
+      });
+    }, { threshold: 0.35 });
+    io.observe(pop);
+  } else {
+    play(); // no observer support: just show them
+  }
 })();
 </script>
 </body>
