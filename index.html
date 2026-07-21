@@ -120,6 +120,18 @@
     .ext-nws .lk{text-transform:uppercase;letter-spacing:0.08em}
     .ext-nws .sl{color:var(--red);font-weight:500}
     .ext-rep{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--red);font-weight:500}
+    /* "Did we get this right?" feedback line (demo card + illustration) */
+    .ext-fb{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:12px;font-size:13px;font-weight:700;color:var(--white)}
+    .ext-fb-btns{display:inline-flex;gap:6px}
+    .ext-fb button{display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;border:1px solid var(--border);border-radius:7px;background:var(--surface,#1A1A1A);color:var(--gray);cursor:pointer;transition:all 0.15s}
+    .ext-fb button:hover{color:var(--white);border-color:var(--gray);transform:translateY(-1px)}
+    .ext-fb button.up:hover{color:var(--green);border-color:var(--green)}
+    .ext-fb button.down:hover{color:var(--red);border-color:var(--red)}
+    .ext-fb button i{font-size:16px}
+    .ext-fb-thanks{display:none;align-items:center;justify-content:center;gap:7px;margin-top:12px;font-size:12px;color:var(--green);text-align:center;line-height:1.4}
+    .ext-fb-thanks i{font-size:15px}
+    .ext-fb.done{display:none}
+    .ext-fb.done + .ext-fb-thanks{display:flex}
     .ext-cap{text-align:center;font-family:'Roboto Mono',monospace;font-size:11px;color:var(--gray);padding:12px}
     @keyframes extPopIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
     @keyframes extPulse{0%,100%{box-shadow:0 0 0 3px rgba(255,0,0,0.22)}50%{box-shadow:0 0 0 5px rgba(255,0,0,0.08)}}
@@ -462,6 +474,14 @@
                 </div>
               </div>
               <div class="ext-rep"><span>See the receipts</span><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+              <div class="ext-fb" data-fb="chan">
+                <span>Did we get this right?</span>
+                <span class="ext-fb-btns">
+                  <button type="button" class="up" aria-label="Yes, correct"><i class="ti ti-thumb-up" aria-hidden="true"></i></button>
+                  <button type="button" class="down" aria-label="No, wrong"><i class="ti ti-thumb-down" aria-hidden="true"></i></button>
+                </span>
+              </div>
+              <div class="ext-fb-thanks"><i class="ti ti-check" aria-hidden="true"></i><span>Thanks! Your feedback helps us protect human creators.</span></div>
             </div>
             <div class="ext-panel ext-panel-vid">
               <div class="ext-vidtitle"><i class="ti ti-player-play" aria-hidden="true"></i><span>Top 10 secrets of Ancient Rome…</span></div>
@@ -478,6 +498,14 @@
               </div>
               <div class="ext-vidnote"><i class="ti ti-info-circle" aria-hidden="true"></i><span>Behavioral and operational are channel-level. Switch to <b>Channel</b> for how it's run.</span></div>
               <div class="ext-rep"><span>See the receipts</span><i class="ti ti-arrow-right" aria-hidden="true"></i></div>
+              <div class="ext-fb" data-fb="vid">
+                <span>Did we get this right?</span>
+                <span class="ext-fb-btns">
+                  <button type="button" class="up" aria-label="Yes, correct"><i class="ti ti-thumb-up" aria-hidden="true"></i></button>
+                  <button type="button" class="down" aria-label="No, wrong"><i class="ti ti-thumb-down" aria-hidden="true"></i></button>
+                </span>
+              </div>
+              <div class="ext-fb-thanks"><i class="ti ti-check" aria-hidden="true"></i><span>Thanks! Your feedback helps us protect human creators.</span></div>
             </div>
           </div>
         </div>
@@ -495,6 +523,7 @@
     <h2>One video can hide it. A whole channel can't.</h2>
     <p class="sec-lede">A single clip might pass as human. Twenty uploads in, the pattern gives it away.</p>
     <p class="sec-lede" style="margin-top:20px">Legit reads the whole channel: how it writes, how it sounds, how it looks, how it acts, how it's run. Then it judges every new upload against everything before it. A one-shot detector sees a single video in isolation. We see the fingerprint across all of them. Much harder to game.</p>
+    <p class="sec-lede" style="margin-top:20px">You still get a read on the video you're watching. It just arrives with the whole channel behind it, which is what makes it hard to fool.</p>
   </div>
 </section>
 
@@ -503,76 +532,68 @@
 <section id="how-signals">
   <div class="wrap">
     <div class="sec-eyebrow">How it works</div>
-    <h2>70+ identifiers, five signals, two questions.</h2>
-    <p class="sec-lede">Five signals, composed of over 70 identifiers, answer two separate questions about every channel.</p>
+    <h2>Five signals. Two questions. One channel.</h2>
+    <p class="sec-lede">Over 70 identifiers roll up into five signals. Each one answers a question about the channel, and each question gets its own read, shown on its own so a clear answer never gets averaged away by the other.</p>
 
     <div class="tribe-group">
-      <div class="tribe-group-h"><span class="tgn">A</span> How it's made <span class="tgq">· Is the content AI-made?</span></div>
+      <div class="tribe-group-h"><span class="tgn">A</span> Is the content AI-made? <span class="tgq">&middot; the authorship read</span></div>
       <div class="tribes three">
         <div class="tribe">
           <div class="tribe-num">01 / TEXT</div>
           <div class="tribe-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="6" y1="10" x2="30" y2="10"/><line x1="6" y1="18" x2="24" y2="18"/><line x1="6" y1="26" x2="20" y2="26"/></svg></div>
           <h3>What it writes</h3>
-          <p>Transcripts, titles and descriptions, read for patterns consistent with AI writing. Feeds the authorship read.</p>
+          <p>Transcripts, titles and descriptions, read for patterns consistent with AI writing.</p>
         </div>
         <div class="tribe">
           <div class="tribe-num">02 / AUDIO</div>
           <div class="tribe-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="9" y1="12" x2="9" y2="24"/><line x1="14" y1="8" x2="14" y2="28"/><line x1="19" y1="14" x2="19" y2="22"/><line x1="24" y1="10" x2="24" y2="26"/><line x1="29" y1="16" x2="29" y2="20"/></svg></div>
           <h3>What it sounds like</h3>
-          <p>Cloned voices, synthetic narration, robotic TTS. Feeds the authorship read. Often fills in over time.</p>
+          <p>Cloned voices, synthetic narration, robotic TTS. Often fills in over time.</p>
         </div>
         <div class="tribe">
           <div class="tribe-num">03 / VISUAL</div>
           <div class="tribe-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="26" height="20" rx="2"/><circle cx="13" cy="16" r="2"/><path d="M5 24l7-7 7 6 5-4 7 7"/></svg></div>
           <h3>What it looks like</h3>
-          <p>Thumbnails and frames, checked for the fingerprints generative models leave behind. Feeds the authorship read.</p>
+          <p>Thumbnails and frames, checked for the fingerprints generative models leave behind.</p>
+        </div>
+      </div>
+      <div class="reads2" style="grid-template-columns:1fr;margin-top:24px">
+        <div class="r2">
+          <div class="r2-h"><span class="r2-q">What you see</span></div>
+          <div class="r2-bar"></div>
+          <div class="r2-ends"><span>Human</span><span>AI</span></div>
+          <div class="r2-cap">How strongly the signals point to AI, read from text, audio and visual. Not a measure of how much of the video is AI.</div>
         </div>
       </div>
     </div>
 
     <div class="tribe-group">
-      <div class="tribe-group-h"><span class="tgn">B</span> How the channel is run <span class="tgq">· Is it run like a content farm?</span></div>
+      <div class="tribe-group-h"><span class="tgn">B</span> Is it run like a content farm? <span class="tgq">&middot; the operations read</span></div>
       <div class="tribes two">
         <div class="tribe">
           <div class="tribe-num">04 / BEHAVIORAL</div>
           <div class="tribe-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="18" r="13"/><path d="M18 10v8l5 3"/></svg></div>
           <h3>How it acts</h3>
-          <p>Upload cadence, comment patterns, community signals. Is this run like a content farm?</p>
+          <p>Upload cadence, comment patterns, community signals.</p>
         </div>
         <div class="tribe">
           <div class="tribe-num">05 / OPERATIONAL</div>
           <div class="tribe-icon"><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 4l-14 14a2 2 0 000 3l10 10a2 2 0 003 0l14-14V4z"/><circle cx="24" cy="12" r="2"/></svg></div>
           <h3>How it's set up</h3>
-          <p>Channel age, verification, history and public metadata. A legit operation, or farm-like?</p>
+          <p>Channel age, verification, history and public metadata.</p>
+        </div>
+      </div>
+      <div class="reads2" style="grid-template-columns:1fr;margin-top:24px">
+        <div class="r2">
+          <div class="r2-h"><span class="r2-q">What you see</span></div>
+          <div class="r2-bar"></div>
+          <div class="r2-ends"><span>Legit</span><span>Farm-like</span></div>
+          <div class="r2-cap">Whether the channel operates like a legit account or a content farm. Read from channel age, upload volume, community and history.</div>
         </div>
       </div>
     </div>
-    <div class="tribes-footer">Independent · Transparent</div>
-  </div>
-</section>
 
-
-<!-- ===================== WHAT YOU SEE — two orthogonal reads ===================== -->
-<section class="score-section">
-  <div class="wrap">
-    <div class="sec-eyebrow">What you see</div>
-    <h2>Two reads. No single verdict.</h2>
-    <p class="sec-lede">We don't boil a channel down to a single score. Those two questions stay two separate reads, each scored on its own with the signals behind it, so a clear answer on one never gets averaged away by the other.</p>
-
-    <div class="reads2">
-      <div class="r2">
-        <div class="r2-h"><span class="r2-q">How it's made</span></div>
-        <div class="r2-bar"></div>
-        <div class="r2-ends"><span>Human</span><span>AI</span></div>
-        <div class="r2-cap">How strongly the signals point to AI, read from text, audio and visual. Not a measure of how much of the video is AI.</div>
-      </div>
-      <div class="r2">
-        <div class="r2-h"><span class="r2-q">How it's run</span></div>
-        <div class="r2-bar"></div>
-        <div class="r2-ends"><span>Legit</span><span>Farm-like</span></div>
-        <div class="r2-cap">Whether the channel operates like a legit account or a content farm. Read from channel age, upload volume, community and history.</div>
-      </div>
-    </div>
+    <p class="sec-lede" style="margin-top:44px;max-width:680px">Two reads, kept separate. We don't boil a channel down to a single score, so a clear answer on one question never gets hidden by the other.</p>
 
     <div class="slop-line">
       <span class="slop-chip"><i class="ti ti-alert-triangle" aria-hidden="true"></i> AI Slop</span>
@@ -583,11 +604,35 @@
       <div class="mixed-chip">Mixed Signals</div>
       <p>Some signals come back clear. When one is unclear, we say <strong>Mixed Signals</strong>. When one is missing, we say that too. We never fill a gap with a guess, or read an unknown as human.</p>
     </div>
+
+    <div class="tribes-footer">Independent &middot; Transparent</div>
   </div>
 </section>
 
 
-<!-- ===================== INDEPENDENCE — YouTube labels vs Legit ===================== -->
+<!-- ===================== COMMUNITY - you keep us honest ===================== -->
+<section id="community" class="pivot">
+  <div class="wrap">
+    <div class="sec-eyebrow">Community</div>
+    <h2>No tool gets it right every time. Ours included.</h2>
+    <p class="sec-lede">We've spent close to a year studying YouTube, AI and detection to build this, and we're proud of it. But no tool gets it right every time. Ours included. Anyone who claims they do is a liar.</p>
+    <p class="sec-lede" style="margin-top:20px">So we don't pretend otherwise. And unlike YouTube, we don't decide which channels and creators should live or die based on imperfect tools. Legit shows the evidence behind every call, and says "Mixed Signals" when it isn't sure instead of guessing. Think we got one wrong? Tell us. Your flags make the next read sharper.</p>
+
+    <div class="slop-line" style="border-color:var(--border);background:var(--black);margin-top:36px">
+      <span class="mixed-chip" style="white-space:nowrap">You keep us honest</span>
+      <p>We do the detection ourselves, then let you keep us honest. We're starting with a simple thumbs up or down on each score, right in the extension, so you can flag a call you think we badly missed. Over time that grows into a fuller community reporting system that sharpens our accuracy, and eventually lets you filter out the kinds of AI content you don't want to see.
+      <span style="display:inline-flex;align-items:center;gap:10px;margin-top:16px;padding:10px 14px;border:1px solid var(--border);border-radius:8px;font-size:13px;font-weight:700;color:var(--white)">Did we get this right?
+        <span style="display:inline-flex;gap:6px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid var(--border);border-radius:7px;color:var(--gray)"><i class="ti ti-thumb-up" aria-hidden="true"></i></span>
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border:1px solid var(--border);border-radius:7px;color:var(--gray)"><i class="ti ti-thumb-down" aria-hidden="true"></i></span>
+        </span>
+      </span></p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== INDEPENDENCE - YouTube labels vs Legit ===================== -->
 <section id="independent">
   <div class="wrap">
     <div class="sec-eyebrow">Why not just trust YouTube's labels?</div>
@@ -706,6 +751,10 @@
 
 <footer>
   free <span class="dot">·</span> independent <span class="dot">·</span> launching soon <span class="dot">·</span> built by two brothers who got tired of AI slop
+  <div style="margin-top:14px">
+    <a href="mailto:hello@staylegit.co" style="color:var(--gray)">hello@staylegit.co</a>
+    <span class="dot">·</span> &copy; 2026 Legit
+  </div>
 </footer>
 
 
@@ -821,6 +870,19 @@
   } else {
     play(); // no observer support: just show them
   }
+})();
+</script>
+<!-- ===================== demo card: "did we get this right" feedback ===================== -->
+<script>
+(function () {
+  document.querySelectorAll('.ext-fb').forEach(function (fb) {
+    fb.querySelectorAll('button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        // Swap the whole line for the thanks message (CSS shows the sibling).
+        fb.classList.add('done');
+      });
+    });
+  });
 })();
 </script>
 </body>
